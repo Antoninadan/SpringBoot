@@ -5,6 +5,7 @@ import com.mainacad.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -32,16 +33,25 @@ public class UserService {
         return user.get();
     }
 
-    public User save(User user){
-        if(user.getId() == null  && userDAO.getFirstByLogin(user.getLogin()) != null)
-        {return userDAO.save(user);}
+    public User save(User user) {
+        if (user.getId() == null && userDAO.getFirstByLogin(user.getLogin()) == null) {
+            return userDAO.save(user);
+        }
         return null;
     }
 
-    public User update(User user){
-        if (user.getId() != null && userDAO.getOne(user.getId())!=null)
-        {return userDAO.save(user);}
+    public User update(User user) {
+        if (user.getId() != null && userDAO.getOne(user.getId()) != null) {
+            return userDAO.save(user);
+        }
         return null;
     }
 
+    public void deleteById(Integer id) {
+        userDAO.deleteById(id);
+    }
+
+    public List<User> getAll() {
+        return userDAO.getAll();
+    }
 }
