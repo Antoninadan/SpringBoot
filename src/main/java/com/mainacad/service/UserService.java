@@ -47,11 +47,15 @@ public class UserService {
         return null;
     }
 
-    public void deleteById(Integer id) {
-        userDAO.deleteById(id);
+    public List<User> getAll() {
+        return userDAO.findAll();
     }
 
-    public List<User> getAll() {
-        return userDAO.getAll();
+    public void delete(User user) {
+        userDAO.delete(user);
+    }
+
+    public void deleteById(Integer id) throws RuntimeException {
+        userDAO.deleteById(id);
     }
 }

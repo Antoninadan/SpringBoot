@@ -16,8 +16,4 @@ public interface UserDAO extends JpaRepository<User, Integer> {
 
     User getFirstByLogin(String login);
 
-    @Query(nativeQuery = true, value = "SELECT * FROM users")
-    List<User> getAll();
-
-    void deleteById(Integer id);
 }
