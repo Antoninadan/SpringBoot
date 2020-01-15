@@ -15,10 +15,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.print.attribute.HashAttributeSet;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
+import java.net.URL;
+import java.util.*;
 
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -86,17 +88,18 @@ class UserControllerTest {
     }
 
     @Test
-    void getByLoginAndPasswordNotFound() throws URISyntaxException {
+    void getByLoginAndPasswordNotFound() throws MalformedURLException {
         User user = new User("test_login", "test_password",
                 "test_first_name", "test_last_name");
-        User userNull = null;
+        URI uri = URI.create("/user/auth?login=login_test&password=test_password");
 
-        when(userService.getByLoginAndPassword(anyString(), anyString())).thenReturn(userNull);
+        when(userService.getByLoginAndPassword(anyString(), anyString())).thenReturn(null);
 
-        RequestEntity request = new RequestEntity(HttpMethod.GET, new URI("/auth?login=test_login12&password=test_password12"));
+        RequestEntity request = new RequestEntity(HttpMethod.POST, uri);
         ResponseEntity<User> response = testRestTemplate.exchange(request, User.class);
 
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
+        assertTrue(response.getBody() ==null);
         verify(userService, times(1)).getByLoginAndPassword(anyString(), anyString());
     }
 
@@ -127,20 +130,40 @@ class UserControllerTest {
     }
 
     @Test
-    void getUserMany() throws URISyntaxException {
+    void getUserMany(){
         User user1 = new User("test_login", "test_password",
                 "test_first_name", "test_last_name");
         User user2 = new User("test_login", "test_password",
                 "test_first_name", "test_last_name");
-        List<User> users = new ArrayList<>();
+        List<User> users = Arrays.asList(user1, user2);
 
         when(userService.getAll()).thenReturn(users);
 
-        RequestEntity request = new RequestEntity(HttpMethod.GET, new URI("/user"));
+        //!!!!!!!!!!!!!!!!!
+        RequestEntity request = new RequestEntity(HttpMethod.GET, URI.create("/user"));
         ResponseEntity<List<User>> response = testRestTemplate.exchange(request,
                 new ParameterizedTypeReference<List<User>>() {});
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
+        verify(userService, times(1)).getAll();
+    }
+
+    @Test
+    void getUserMany2Realization(){
+        User user1 = new User("test_login", "test_password",
+                "test_first_name", "test_last_name");
+        User user2 = new User("test_login", "test_password",
+                "test_first_name", "test_last_name");
+        List<User> users = Arrays.asList(user1, user2);
+
+        when(userService.getAll()).thenReturn(users);
+        RequestEntity request = new RequestEntity(HttpMethod.GET, URI.create("/user"));
+        ResponseEntity<List<User>> response = testRestTemplate.exchange(request,
+                new ParameterizedTypeReference<List<User>>() {});
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(2, response.getBody().size());
+        assertTrue(response.getBody().get(0) instanceof User);
         verify(userService, times(1)).getAll();
     }
 

@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 
 //@Controller
@@ -39,11 +40,11 @@ public class UserController {
         return new ResponseEntity(user, HttpStatus.OK);
     }
 
-    @GetMapping("auth")
+    @PostMapping("auth")
     public ResponseEntity getByLoginAndPassword(@RequestParam String login, @RequestParam String password) {
         User user = userService.getByLoginAndPassword(login, password);
         if (user == null) {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
         }
         return new ResponseEntity(user, HttpStatus.OK);
     }
