@@ -4,7 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-@SpringBootApplication
+@SpringBootApplication // Spring Boot включит автоматическую настройку и отсканирует ваши ресурсы в текущем пакете
 @EnableSwagger2
 public class AppRunner {
 

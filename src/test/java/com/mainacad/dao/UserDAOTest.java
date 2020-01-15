@@ -29,7 +29,6 @@ class UserDAOTest {
         assertTrue(usersFound.size() == 1);
         assertEquals(usersFound.get(0).getFirstName(), userSaved.getFirstName());
 
-
         // example
         try {
             userDAO.deleteById(Integer.MAX_VALUE);

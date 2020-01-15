@@ -14,6 +14,7 @@ public class UserService {
     UserDAO userDAO;
 
     public User getByLoginAndPassword(String login, String password) {
+//       // version without DAO
 //        if (login.equals(login) && password.equals("password")) {
 //            return new User(1, "login", "password", "first-name", "last-name");
 //        }
@@ -22,6 +23,7 @@ public class UserService {
     }
 
     public User getById(Integer id) {
+//        // version without DAO
 //        if (id.equals(1)) {
 //            return new User(1, "login", "password", "first-name", "last-name");
 //        }

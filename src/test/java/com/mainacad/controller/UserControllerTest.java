@@ -7,14 +7,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -31,33 +35,170 @@ class UserControllerTest {
     @Test
     void save() throws URISyntaxException {
         User user = new User();
-        RequestEntity<User> request = new RequestEntity<>(user, HttpMethod.PUT, new URI("/user"));
 
         when(userService.save(any(User.class))).thenReturn(user);
+
+        RequestEntity<User> request = new RequestEntity<>(user, HttpMethod.PUT, new URI("/user"));
         ResponseEntity<User> response = testRestTemplate.exchange(request, User.class);
 
-        assertEquals(response.getStatusCode(), HttpStatus.OK);
-
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         verify(userService, times(1)).save(any(User.class));
     }
 
     @Test
-    void update() {
+    void update() throws URISyntaxException {
+        User user = new User();
+
+        when(userService.update(any(User.class))).thenReturn(user);
+
+        RequestEntity<User> request = new RequestEntity<>(user, HttpMethod.POST, new URI("/user"));
+        ResponseEntity<User> response = testRestTemplate.exchange(request, User.class);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        verify(userService, times(1)).update(any(User.class));
     }
 
     @Test
-    void getByLoginAndPassword() {
+    void updateNull() throws URISyntaxException {
+        User user = null;
+
+        when(userService.update(any(User.class))).thenReturn(user);
+
+        RequestEntity<User> request = new RequestEntity<>(user, HttpMethod.POST, new URI("/user"));
+        ResponseEntity<User> response = testRestTemplate.exchange(request, User.class);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        verify(userService, times(1)).update(any(User.class));
     }
 
     @Test
-    void getUser() {
+    void getByLoginAndPassword() throws URISyntaxException {
+        User user = new User("test_login", "test_password",
+                "test_first_name", "test_last_name");
+
+        when(userService.getByLoginAndPassword(anyString(), anyString())).thenReturn(user);
+
+        RequestEntity request = new RequestEntity(HttpMethod.GET, new URI("/auth?login=test_login&password=test_password"));
+        ResponseEntity<User> response = testRestTemplate.exchange(request, User.class);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        verify(userService, times(1)).getByLoginAndPassword(anyString(), anyString());
     }
 
     @Test
-    void delete() {
+    void getByLoginAndPasswordNotFound() throws URISyntaxException {
+        User user = new User("test_login", "test_password",
+                "test_first_name", "test_last_name");
+        User userNull = null;
+
+        when(userService.getByLoginAndPassword(anyString(), anyString())).thenReturn(userNull);
+
+        RequestEntity request = new RequestEntity(HttpMethod.GET, new URI("/auth?login=test_login12&password=test_password12"));
+        ResponseEntity<User> response = testRestTemplate.exchange(request, User.class);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        verify(userService, times(1)).getByLoginAndPassword(anyString(), anyString());
     }
 
     @Test
-    void deleteById() {
+    void getUserOne() throws URISyntaxException {
+        User user = new User();
+
+        when(userService.getById(anyInt())).thenReturn(user);
+
+        RequestEntity request = new RequestEntity(HttpMethod.GET, new URI("/user/1515"));
+        ResponseEntity<User> response = testRestTemplate.exchange(request, User.class);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        verify(userService, times(1)).getById(anyInt());
     }
+
+    @Test
+    void getUserOneNotFound() throws URISyntaxException {
+        User user = null;
+
+        when(userService.getById(anyInt())).thenReturn(user);
+
+        RequestEntity request = new RequestEntity(HttpMethod.GET, new URI("/user/1515"));
+        ResponseEntity<User> response = testRestTemplate.exchange(request, User.class);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        verify(userService, times(1)).getById(anyInt());
+    }
+
+    @Test
+    void getUserMany() throws URISyntaxException {
+        User user1 = new User("test_login", "test_password",
+                "test_first_name", "test_last_name");
+        User user2 = new User("test_login", "test_password",
+                "test_first_name", "test_last_name");
+        List<User> users = new ArrayList<>();
+
+        when(userService.getAll()).thenReturn(users);
+
+        RequestEntity request = new RequestEntity(HttpMethod.GET, new URI("/user"));
+        ResponseEntity<List<User>> response = testRestTemplate.exchange(request,
+                new ParameterizedTypeReference<List<User>>() {});
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        verify(userService, times(1)).getAll();
+    }
+
+    @Test
+    void delete() throws URISyntaxException {
+        User user = new User("test_login", "test_password",
+                "test_first_name", "test_last_name");
+
+        doNothing().when(userService).delete(any(User.class));
+
+        RequestEntity request = new RequestEntity(user, HttpMethod.DELETE, new URI("/user"));
+        ResponseEntity<User> response = testRestTemplate.exchange(request, User.class);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        verify(userService, times(1)).delete(any(User.class));
+    }
+
+    @Test
+    void deleteNotFount() throws URISyntaxException {
+        User user = new User("test_login", "test_password",
+                "test_first_name", "test_last_name");
+
+        doThrow(new RuntimeException()).when(userService).delete(any(User.class));
+
+        RequestEntity request = new RequestEntity(user, HttpMethod.DELETE, new URI("/user"));
+        ResponseEntity<User> response = testRestTemplate.exchange(request, User.class);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        verify(userService, times(1)).delete(any(User.class));
+    }
+
+    @Test
+    void deleteById() throws URISyntaxException {
+        User user = new User(1, "test_login", "test_password",
+                "test_first_name", "test_last_name");
+
+        doNothing().when(userService).deleteById(anyInt());
+
+        RequestEntity request = new RequestEntity(HttpMethod.DELETE, new URI("/user/1"));
+        ResponseEntity<User> response = testRestTemplate.exchange(request, User.class);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        verify(userService, times(1)).deleteById(anyInt());
+    }
+
+    @Test
+    void deleteByIdNotFound() throws URISyntaxException {
+        User user = new User(1, "test_login", "test_password",
+                "test_first_name", "test_last_name");
+
+        doThrow(new RuntimeException()).when(userService).deleteById(anyInt());
+
+        RequestEntity request = new RequestEntity(HttpMethod.DELETE, new URI("/user/1"));
+        ResponseEntity<User> response = testRestTemplate.exchange(request, User.class);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        verify(userService, times(1)).deleteById(anyInt());
+    }
+
+
 }

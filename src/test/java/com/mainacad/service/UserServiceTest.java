@@ -28,8 +28,8 @@ class UserServiceTest {
                 "test_first_name", "test_last_name");
 //        userDAO.save(user);
 //        when(userDAO.getFirstByLoginAndPassword("test_login", "test_password"));
-        when(userDAO.getFirstByLoginAndPassword(anyString(), anyString())).thenReturn(user);
         // work once!!!!!!!!!!!!!!!!!!!
+        when(userDAO.getFirstByLoginAndPassword(anyString(), anyString())).thenReturn(user);
 
         User userSaved = userService.getByLoginAndPassword("test_login", "test_password");
 
