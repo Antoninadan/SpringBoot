@@ -88,7 +88,23 @@ class UserControllerTest {
     }
 
     @Test
-    void getByLoginAndPasswordNotFound() throws MalformedURLException {
+    void getByLoginAndPasswordNotFound() {
+        User user = new User("test_login", "test_password",
+                "test_first_name", "test_last_name");
+        URI uri = URI.create("/user/auth?login=login_test&password=test_password");
+
+        when(userService.getByLoginAndPassword(anyString(), anyString())).thenReturn(null);
+
+        RequestEntity request = new RequestEntity(HttpMethod.POST, uri);
+        ResponseEntity<User> response = testRestTemplate.exchange(request, User.class);
+
+        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
+        assertTrue(response.getBody() ==null);
+        verify(userService, times(1)).getByLoginAndPassword(anyString(), anyString());
+    }
+
+    @Test
+    void getByLoginAndPasswordNotFound2() {
         User user = new User("test_login", "test_password",
                 "test_first_name", "test_last_name");
         URI uri = URI.create("/user/auth?login=login_test&password=test_password");
