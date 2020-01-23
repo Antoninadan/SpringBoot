@@ -11,12 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
-public class User {
-    @Column(name = "id")
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
+public class User extends BaseEntity{
     @Column(name = "login")
     private String login;
 
@@ -29,7 +24,8 @@ public class User {
     @Column(name = "last_name")
     private String lastName;
 
-    public User(String login, String password, String firstName, String lastName) {
+    public User(Integer id, String login, String password, String firstName, String lastName) {
+        super(id);
         this.login = login;
         this.password = password;
         this.firstName = firstName;
