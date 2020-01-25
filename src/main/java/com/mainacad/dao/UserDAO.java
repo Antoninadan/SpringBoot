@@ -16,4 +16,5 @@ public interface UserDAO extends JpaRepository<User, Integer> { //это инт�
 
     User getFirstByLogin(String login);
 
+
 }

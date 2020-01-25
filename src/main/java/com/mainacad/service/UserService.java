@@ -28,6 +28,7 @@ public class UserService {
 //            return new User(1, "login", "password", "first-name", "last-name");
 //        }
 //        return null;
+
         Optional<User> user = userDAO.findById(id);
         if (user.isEmpty()) {
             return null;
