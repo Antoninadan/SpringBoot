@@ -4,7 +4,6 @@ import com.mainacad.dao.OrderDAO;
 import com.mainacad.dao.model.OrderDTO;
 import com.mainacad.model.Order;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

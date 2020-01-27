@@ -24,12 +24,12 @@ public class CartService {
         return cart.get();
     }
 
-    public List<Cart> getAllByUserAndPeriod(User user, Long timeFrom, Long timeTo) {
-        return cartDAO.getAllByUserAndPeriod(user, timeFrom, timeTo);
+    public List<Cart> getAllByUserAndPeriod(Integer userId, Long timeFrom, Long timeTo) {
+        return cartDAO.getAllByUserAndPeriod(userId, timeFrom, timeTo);
     }
 
-    public Cart getByUserAndOpenStatus(Integer id) {
-        return cartDAO.getByUserAndOpenStatus(id);
+    public Cart getByUserAndOpenStatus(Integer userId) {
+        return cartDAO.getByUserAndOpenStatus(userId);
     }
 
     public Cart updateStatus(Integer cartId, Status status) {
