@@ -74,16 +74,20 @@ public class CartController {
         }
     }
 
+
+    // TODO fix
     @GetMapping("by-user-period/{userId}/{timeFrom}/{timeTo}")
     public ResponseEntity getAllByUserAndPeriod(@PathVariable Integer userId, @PathVariable Long timeFrom, @PathVariable Long timeTo) {
         return new ResponseEntity(cartService.getAllByUserAndPeriod(userId, timeFrom, timeTo), HttpStatus.OK);
     }
 
+    // TODO fix
     @GetMapping("by-user-open-status/{userId}")
     public ResponseEntity getByUserAndOpenStatus(@PathVariable Integer userId) {
         return new ResponseEntity(cartService.getByUserAndOpenStatus(userId), HttpStatus.OK);
     }
 
+    // TODO fix
     @PostMapping("update-status")
     public ResponseEntity updateStatus(@RequestBody String body) {
         Map<String, Object> map = new JacksonJsonParser().parseMap(body);
@@ -94,6 +98,7 @@ public class CartController {
         return new ResponseEntity(updatedCart, HttpStatus.OK);
     }
 
+    // TODO fix
     @GetMapping("items-sum/{timeFrom}/{timeTo}")
     public ResponseEntity getItemsSumGroupedByUser(@PathVariable Long timeFrom, @PathVariable Long timeTo) {
         return new ResponseEntity(cartService.getItemsSumGroupedByUser(timeFrom, timeTo), HttpStatus.OK);
