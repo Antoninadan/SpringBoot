@@ -1,8 +1,7 @@
 package com.mainacad.dao;
 
-import com.mainacad.dao.model.CartSumDTO;
+import com.mainacad.dao.model.CartDTO;
 import com.mainacad.model.Cart;
-import com.mainacad.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -31,5 +30,5 @@ public interface CartDAO extends JpaRepository<Cart, Integer> {
                                         "WHERE c.creation_time >= :timeFrom AND c.creation_time <= :timeTo AND c.status = 2 " +
                                         "GROUP BY u.login " +
                                         "ORDER BY MIN(c.creation_time)")
-    public List<CartSumDTO> getItemsSumGroupedByUser(Long timeFrom, Long timeTo);
+    public List<CartDTO> getItemsSumGroupedByUser(Long timeFrom, Long timeTo);
 }

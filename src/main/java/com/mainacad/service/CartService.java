@@ -1,10 +1,9 @@
 package com.mainacad.service;
 
 import com.mainacad.dao.CartDAO;
-import com.mainacad.dao.model.CartSumDTO;
+import com.mainacad.dao.model.CartDTO;
 import com.mainacad.model.Cart;
 import com.mainacad.model.Status;
-import com.mainacad.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,20 +36,13 @@ public class CartService {
         return cartDAO.updateStatus(cartId, statusOrdinal);
     }
 
-    public List<CartSumDTO> getItemsSumGroupedByUser(Long timeFrom, Long timeTo) {
+    public List<CartDTO> getItemsSumGroupedByUser(Long timeFrom, Long timeTo) {
         return cartDAO.getItemsSumGroupedByUser(timeFrom, timeTo);
     }
 
     // CRUD
     public Cart save(Cart cart) {
         if (cart.getId() == null) {
-            return cartDAO.save(cart);
-        }
-        return null;
-    }
-
-    public Cart update(Cart cart) {
-        if (cart.getId() != null && cartDAO.getOne(cart.getId()) != null) {
             return cartDAO.save(cart);
         }
         return null;

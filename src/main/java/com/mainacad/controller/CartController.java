@@ -3,6 +3,7 @@ package com.mainacad.controller;
 import com.mainacad.model.Cart;
 import com.mainacad.model.Status;
 import com.mainacad.service.CartService;
+import com.mainacad.util.MapperUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.json.JacksonJsonParser;
@@ -21,22 +22,15 @@ public class CartController {
     @Autowired
     CartService cartService;
 
-    @PutMapping
-    public ResponseEntity save(@RequestBody Cart cart) {
-        Cart savedCart = cartService.save(cart);
-        if (savedCart == null) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity(cart, HttpStatus.OK);
-    }
+    @Autowired
+    MapperUtil mapperUtil;
 
-    @PostMapping
-    public ResponseEntity update(@RequestBody Cart cart) {
-        Cart updatedCart = cartService.update(cart);
-        if (updatedCart == null) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity(cart, HttpStatus.OK);
+    @PutMapping
+    public ResponseEntity save(@RequestBody String requestBody) {
+
+       cartService.save(mapperUtil.toCart(mapperUtil.toCartDTO(requestBody)));
+
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @GetMapping({"", "{id}"})
