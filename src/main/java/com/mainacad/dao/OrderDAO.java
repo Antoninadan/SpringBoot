@@ -1,9 +1,7 @@
 package com.mainacad.dao;
 
-import com.mainacad.dao.model.OrderDTO;
+import com.mainacad.dao.dto.OrderDTO;
 import com.mainacad.model.Order;
-import org.hibernate.Session;
-import org.hibernate.query.NativeQuery;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

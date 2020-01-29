@@ -17,4 +17,4 @@ public enum Status {
     public Status getByValue(String value){
        return Status.valueOf(value);
     }
-}
+ }

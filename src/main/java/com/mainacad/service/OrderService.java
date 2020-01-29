@@ -1,7 +1,7 @@
 package com.mainacad.service;
 
 import com.mainacad.dao.OrderDAO;
-import com.mainacad.dao.model.OrderDTO;
+import com.mainacad.dao.dto.OrderDTO;
 import com.mainacad.model.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

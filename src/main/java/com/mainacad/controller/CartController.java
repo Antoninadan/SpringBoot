@@ -27,9 +27,7 @@ public class CartController {
 
     @PutMapping
     public ResponseEntity save(@RequestBody String requestBody) {
-
-       cartService.save(mapperUtil.toCart(mapperUtil.toCartDTO(requestBody)));
-
+        cartService.save(mapperUtil.toCart(mapperUtil.toCartDTO(requestBody)));
         return new ResponseEntity(HttpStatus.OK);
     }
 
@@ -40,9 +38,9 @@ public class CartController {
             if (cart == null) {
                 return new ResponseEntity(HttpStatus.NOT_FOUND);
             }
-            return new ResponseEntity(cart, HttpStatus.OK);
+            return new ResponseEntity(mapperUtil.toCartDTOFromCart(cart), HttpStatus.OK);
         } else {
-            return new ResponseEntity(cartService.getAll(), HttpStatus.OK);
+            return new ResponseEntity(mapperUtil.toCartDTOListFromCartList(cartService.getAll()), HttpStatus.OK);
         }
     }
 
@@ -68,35 +66,21 @@ public class CartController {
         }
     }
 
-
-    // TODO fix
     @GetMapping("by-user-period/{userId}/{timeFrom}/{timeTo}")
     public ResponseEntity getAllByUserAndPeriod(@PathVariable Integer userId, @PathVariable Long timeFrom, @PathVariable Long timeTo) {
-        return new ResponseEntity(cartService.getAllByUserAndPeriod(userId, timeFrom, timeTo), HttpStatus.OK);
+        return new ResponseEntity(mapperUtil.toCartDTOListFromCartList(cartService.getAllByUserAndPeriod(userId, timeFrom, timeTo)), HttpStatus.OK);
     }
 
-    // TODO fix
     @GetMapping("by-user-open-status/{userId}")
     public ResponseEntity getByUserAndOpenStatus(@PathVariable Integer userId) {
-        return new ResponseEntity(cartService.getByUserAndOpenStatus(userId), HttpStatus.OK);
+        return new ResponseEntity(mapperUtil.toCartDTOListFromCartList(cartService.getByUserAndOpenStatus(userId)), HttpStatus.OK);
     }
 
     // TODO fix
     @PostMapping("update-status")
     public ResponseEntity updateStatus(@RequestBody String body) {
         Map<String, Object> map = new JacksonJsonParser().parseMap(body);
-        Cart updatedCart = cartService.updateStatus((Integer) map.get("cartId"), Status.valueOf((String) map.get("status")) );
-        if (updatedCart == null) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity(updatedCart, HttpStatus.OK);
+        cartService.updateStatus((Integer) map.get("cartId"), Status.valueOf((String) map.get("status")));
+        return new ResponseEntity(HttpStatus.OK);
     }
-
-    // TODO fix
-    @GetMapping("items-sum/{timeFrom}/{timeTo}")
-    public ResponseEntity getItemsSumGroupedByUser(@PathVariable Long timeFrom, @PathVariable Long timeTo) {
-        return new ResponseEntity(cartService.getItemsSumGroupedByUser(timeFrom, timeTo), HttpStatus.OK);
-    }
-
-
 }

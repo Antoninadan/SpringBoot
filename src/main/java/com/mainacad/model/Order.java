@@ -33,5 +33,4 @@ public class Order extends BaseEntity{
         this.cart = cart;
         this.amount = amount;
     }
-
 }

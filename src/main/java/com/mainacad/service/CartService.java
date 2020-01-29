@@ -1,7 +1,7 @@
 package com.mainacad.service;
 
 import com.mainacad.dao.CartDAO;
-import com.mainacad.dao.model.CartDTO;
+import com.mainacad.dao.dto.CartDTO;
 import com.mainacad.model.Cart;
 import com.mainacad.model.Status;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,17 +27,14 @@ public class CartService {
         return cartDAO.getAllByUserAndPeriod(userId, timeFrom, timeTo);
     }
 
-    public Cart getByUserAndOpenStatus(Integer userId) {
+    public List<Cart> getByUserAndOpenStatus(Integer userId) {
         return cartDAO.getByUserAndOpenStatus(userId);
     }
 
-    public Cart updateStatus(Integer cartId, Status status) {
-        int statusOrdinal = status.ordinal();
-        return cartDAO.updateStatus(cartId, statusOrdinal);
-    }
+    public void updateStatus(Integer cartId, Status status) {
 
-    public List<CartDTO> getItemsSumGroupedByUser(Long timeFrom, Long timeTo) {
-        return cartDAO.getItemsSumGroupedByUser(timeFrom, timeTo);
+            cartDAO.updateStatus(cartId, status.ordinal());
+
     }
 
     // CRUD

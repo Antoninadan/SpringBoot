@@ -1,10 +1,8 @@
-package com.mainacad.dao.model;
+package com.mainacad.dao.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-
-import javax.persistence.Entity;
 
 @Setter
 @Getter
