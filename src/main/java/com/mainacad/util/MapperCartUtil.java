@@ -6,6 +6,7 @@ import com.mainacad.dao.UserDAO;
 import com.mainacad.dao.dto.CartDTO;
 import com.mainacad.model.Cart;
 import com.mainacad.model.Status;
+import com.mainacad.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,9 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class MapperUtil {
+public class MapperCartUtil {
     @Autowired
-    UserDAO userDAO;
+    UserService userService;
 
     @Autowired
     ObjectMapper objectMapper;
@@ -24,7 +25,7 @@ public class MapperUtil {
         Cart cart = new Cart();
         cart.setId(cartDTO.getId());
         cart.setStatus(Status.valueOf(cartDTO.getStatus().toUpperCase()));
-        cart.setUser(userDAO.getOne(cartDTO.getUserId()));
+        cart.setUser(userService.getById(cartDTO.getUserId()));
         cart.setCreationTime(cartDTO.getCreationTime());
         return cart;
     }
@@ -39,22 +40,18 @@ public class MapperUtil {
     }
 
     public CartDTO toCartDTOFromCart(Cart cart) {
-        Integer id = cart.getId();
-        Integer userId = cart.getUser().getId();
-        Long creationTime = cart.getCreationTime();
-        String status = cart.getStatus().name();
-        return new CartDTO(id, userId, creationTime, status);
+        CartDTO cartDTO = new CartDTO();
+        cartDTO.setId(cart.getId());
+        cartDTO.setUserId(cart.getUser().getId());
+        cartDTO.setCreationTime(cart.getCreationTime());
+        cartDTO.setStatus(cart.getStatus().name());
+        return cartDTO;
     }
 
     public List<CartDTO> toCartDTOListFromCartList(List<Cart> carts) {
         List<CartDTO> cartDTOs = new ArrayList<>();
         for(Cart each:carts){
-
-            Integer id = each.getId();
-            Integer userId = each.getUser().getId();
-            Long creationTime = each.getCreationTime();
-            String status = each.getStatus().name();
-            CartDTO cartDTO = new CartDTO(id, userId, creationTime, status);
+            CartDTO cartDTO = toCartDTOFromCart(each);
             cartDTOs.add(cartDTO);
         }
         return cartDTOs;

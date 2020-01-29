@@ -3,7 +3,7 @@ package com.mainacad.controller;
 import com.mainacad.model.Cart;
 import com.mainacad.model.Status;
 import com.mainacad.service.CartService;
-import com.mainacad.util.MapperUtil;
+import com.mainacad.util.MapperCartUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.json.JacksonJsonParser;
@@ -23,12 +23,15 @@ public class CartController {
     CartService cartService;
 
     @Autowired
-    MapperUtil mapperUtil;
+    MapperCartUtil mapperCartUtil;
 
     @PutMapping
     public ResponseEntity save(@RequestBody String requestBody) {
-        cartService.save(mapperUtil.toCart(mapperUtil.toCartDTO(requestBody)));
-        return new ResponseEntity(HttpStatus.OK);
+        Cart savedCart = cartService.save(mapperCartUtil.toCart(mapperCartUtil.toCartDTO(requestBody)));
+        if (savedCart == null) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity(mapperCartUtil.toCartDTOFromCart(savedCart), HttpStatus.OK);
     }
 
     @GetMapping({"", "{id}"})
@@ -38,9 +41,9 @@ public class CartController {
             if (cart == null) {
                 return new ResponseEntity(HttpStatus.NOT_FOUND);
             }
-            return new ResponseEntity(mapperUtil.toCartDTOFromCart(cart), HttpStatus.OK);
+            return new ResponseEntity(mapperCartUtil.toCartDTOFromCart(cart), HttpStatus.OK);
         } else {
-            return new ResponseEntity(mapperUtil.toCartDTOListFromCartList(cartService.getAll()), HttpStatus.OK);
+            return new ResponseEntity(mapperCartUtil.toCartDTOListFromCartList(cartService.getAll()), HttpStatus.OK);
         }
     }
 
@@ -68,12 +71,12 @@ public class CartController {
 
     @GetMapping("by-user-period/{userId}/{timeFrom}/{timeTo}")
     public ResponseEntity getAllByUserAndPeriod(@PathVariable Integer userId, @PathVariable Long timeFrom, @PathVariable Long timeTo) {
-        return new ResponseEntity(mapperUtil.toCartDTOListFromCartList(cartService.getAllByUserAndPeriod(userId, timeFrom, timeTo)), HttpStatus.OK);
+        return new ResponseEntity(mapperCartUtil.toCartDTOListFromCartList(cartService.getAllByUserAndPeriod(userId, timeFrom, timeTo)), HttpStatus.OK);
     }
 
     @GetMapping("by-user-open-status/{userId}")
     public ResponseEntity getByUserAndOpenStatus(@PathVariable Integer userId) {
-        return new ResponseEntity(mapperUtil.toCartDTOListFromCartList(cartService.getByUserAndOpenStatus(userId)), HttpStatus.OK);
+        return new ResponseEntity(mapperCartUtil.toCartDTOListFromCartList(cartService.getByUserAndOpenStatus(userId)), HttpStatus.OK);
     }
 
     // TODO fix

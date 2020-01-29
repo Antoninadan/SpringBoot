@@ -2,6 +2,7 @@ package com.mainacad.controller;
 
 import com.mainacad.model.Order;
 import com.mainacad.service.OrderService;
+import com.mainacad.util.MapperOrderUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.json.JacksonJsonParser;
@@ -20,22 +21,25 @@ public class OrderController {
     @Autowired
     OrderService orderService;
 
+    @Autowired
+    MapperOrderUtil mapperOrderUtil;
+
     @PutMapping
-    public ResponseEntity save(@RequestBody Order order) {
-        Order savedOrder = orderService.save(order);
+    public ResponseEntity save(@RequestBody String requestBody) {
+        Order savedOrder = orderService.save(mapperOrderUtil.toOrder(mapperOrderUtil.toOrderDTO(requestBody)));
         if (savedOrder == null) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity(order, HttpStatus.OK);
+        return new ResponseEntity(mapperOrderUtil.toOrderDTOFromOrder(savedOrder), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity update(@RequestBody Order order) {
-        Order updatedOrder = orderService.update(order);
+    public ResponseEntity update(@RequestBody String requestBody) {
+        Order updatedOrder = orderService.update(mapperOrderUtil.toOrder(mapperOrderUtil.toOrderDTO(requestBody)));
         if (updatedOrder == null) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity(order, HttpStatus.OK);
+        return new ResponseEntity(mapperOrderUtil.toOrderDTOFromOrder(updatedOrder), HttpStatus.OK);
     }
 
     @GetMapping({"", "{id}"})
@@ -45,9 +49,9 @@ public class OrderController {
             if (order == null) {
                 return new ResponseEntity(HttpStatus.NOT_FOUND);
             }
-            return new ResponseEntity(order, HttpStatus.OK);
+            return new ResponseEntity(mapperOrderUtil.toOrderDTOFromOrder(order), HttpStatus.OK);
         } else {
-            return new ResponseEntity(orderService.getAll(), HttpStatus.OK);
+            return new ResponseEntity(mapperOrderUtil.toOrderDTOListFromOrderList(orderService.getAll()), HttpStatus.OK);
         }
     }
 
@@ -73,16 +77,20 @@ public class OrderController {
         }
     }
 
+
+    // TODO
     @GetMapping("by-cart/{orderId}")
     public ResponseEntity getAllByCart(Integer orderId) {
         return new ResponseEntity(orderService.getAllByCart(orderId), HttpStatus.OK);
     }
 
-    @GetMapping("dto-by-cart/{orderId}")
-    public ResponseEntity getAllDTOByCard(Integer orderId) {
-        return new ResponseEntity(orderService.getAllDTOByCard(orderId), HttpStatus.OK);
-    }
+    // TODO
+//    @GetMapping("dto-by-cart/{orderId}")
+//    public ResponseEntity getAllDTOByCard(Integer orderId) {
+//        return new ResponseEntity(orderService.getAllDTOByCard(orderId), HttpStatus.OK);
+//    }
 
+    // TODO
     @PostMapping("update-amount")
     public ResponseEntity updateAmount(@RequestBody String body) {
         Map<String, Object> map = new JacksonJsonParser().parseMap(body);

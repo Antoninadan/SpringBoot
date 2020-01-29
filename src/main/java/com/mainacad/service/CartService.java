@@ -1,7 +1,6 @@
 package com.mainacad.service;
 
 import com.mainacad.dao.CartDAO;
-import com.mainacad.dao.dto.CartDTO;
 import com.mainacad.model.Cart;
 import com.mainacad.model.Status;
 import org.springframework.beans.factory.annotation.Autowired;

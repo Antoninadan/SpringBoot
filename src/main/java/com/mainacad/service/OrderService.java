@@ -26,9 +26,10 @@ public class OrderService {
         return orderDAO.getAllByCart(orderId);
     }
 
-    public List<OrderDTO> getAllDTOByCard(Integer orderId) {
-        return orderDAO.getAllDTOByCard(orderId);
-    }
+    // TODO OrderItemDTO
+//    public List<OrderDTO> getAllDTOByCard(Integer orderId) {
+//        return orderDAO.getAllDTOByCard(orderId);
+//    }
 
     public Order updateAmount(Integer orderId, Integer amount) {
         return orderDAO.updateAmount(orderId, amount);
