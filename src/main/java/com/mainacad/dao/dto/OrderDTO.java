@@ -12,5 +12,7 @@ public class OrderDTO {
 	private Integer id;
 	private Integer itemId;
     private Integer cartId;
+    private String itemName;
+    private Integer itemPrice;
     private Integer amount;
 }

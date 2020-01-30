@@ -22,16 +22,15 @@ public class OrderService {
         return order.get();
     }
 
-    public List<Order> getAllByCart(Integer orderId) {
-        return orderDAO.getAllByCart(orderId);
+    public List<Order> getAllByCart(Integer cartId) {
+        return orderDAO.getAllByCart(cartId);
     }
 
-    // TODO OrderItemDTO
 //    public List<OrderDTO> getAllDTOByCard(Integer orderId) {
 //        return orderDAO.getAllDTOByCard(orderId);
 //    }
 
-    public Order updateAmount(Integer orderId, Integer amount) {
+    public int updateAmount(Integer orderId, Integer amount) {
         return orderDAO.updateAmount(orderId, amount);
     }
 

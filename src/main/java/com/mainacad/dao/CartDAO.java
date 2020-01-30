@@ -22,5 +22,5 @@ public interface CartDAO extends JpaRepository<Cart, Integer> {
     @Modifying
     @Transactional
     @Query(nativeQuery = true, value = "UPDATE carts SET status = :statusOrdinal WHERE id = :cartId")
-    void updateStatus(@Param("cartId") Integer cartId, @Param("statusOrdinal") int statusOrdinal);
+    int updateStatus(@Param("cartId") Integer cartId, @Param("statusOrdinal") int statusOrdinal);
 }

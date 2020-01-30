@@ -30,10 +30,8 @@ public class CartService {
         return cartDAO.getByUserAndOpenStatus(userId);
     }
 
-    public void updateStatus(Integer cartId, Status status) {
-
-            cartDAO.updateStatus(cartId, status.ordinal());
-
+    public int updateStatus(Integer cartId, Status status) {
+        return cartDAO.updateStatus(cartId, status.ordinal());
     }
 
     // CRUD

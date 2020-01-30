@@ -79,11 +79,14 @@ public class CartController {
         return new ResponseEntity(mapperCartUtil.toCartDTOListFromCartList(cartService.getByUserAndOpenStatus(userId)), HttpStatus.OK);
     }
 
-    // TODO fix
     @PostMapping("update-status")
     public ResponseEntity updateStatus(@RequestBody String body) {
         Map<String, Object> map = new JacksonJsonParser().parseMap(body);
         cartService.updateStatus((Integer) map.get("cartId"), Status.valueOf((String) map.get("status")));
+        int updatedRows =  cartService.updateStatus((Integer) map.get("cartId"), Status.valueOf((String) map.get("status")));
+        if (updatedRows < 1) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity(HttpStatus.OK);
     }
 }
