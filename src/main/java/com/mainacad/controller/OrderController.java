@@ -6,6 +6,7 @@ import com.mainacad.util.MapperOrderUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.json.JacksonJsonParser;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("order")
 @Slf4j
+@Profile("rest")
 public class OrderController {
     @Autowired
     OrderService orderService;

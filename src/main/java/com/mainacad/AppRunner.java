@@ -12,7 +12,10 @@ public class AppRunner {
 
 	public static void main(String[] args) {
 
-		SpringApplication.run(AppRunner.class, args);
-	}
+//		SpringApplication.run(AppRunner.class, args);
 
+		SpringApplication context = new SpringApplication(com.mainacad.AppRunner.class);
+		context.setAdditionalProfiles("rest");
+		context.run(args);
+	}
 }
