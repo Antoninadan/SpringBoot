@@ -8,9 +8,9 @@ spring:
       suffix: .jsp
       prefix: /WEB-INF/jsp/
   datasource:
-    url: "jdbc:postgresql://localhost:5432/spring"
+    url: "jdbc:postgresql://localhost:5433/spring"
     username: "postgres"
-    password: "estafeta"
+    password: "postgresql"
     hikari:
 #      ${<parametr>:<def if we dont find parametr>}
       connectionTimeout: ${custom.connectionTimeout:20000}
@@ -25,4 +25,4 @@ spring:
             non_contextual_creation: true
     hibernate:
       ddl-auto: update
-  flyway.baseline-on-migrate: true
+#  flyway.baseline-on-migrate: true

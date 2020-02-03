@@ -35,15 +35,6 @@ public class OrderController {
         return new ResponseEntity(mapperOrderUtil.jsonOrderDTOSimpleFormat(savedOrder), HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity update(@RequestBody String requestBody) {
-        Order updatedOrder = orderService.update(mapperOrderUtil.toOrder(mapperOrderUtil.toOrderDTO(requestBody)));
-        if (updatedOrder == null) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity(mapperOrderUtil.jsonOrderDTOSimpleFormat(updatedOrder), HttpStatus.OK);
-    }
-
     @GetMapping({"", "{id}"})
     public ResponseEntity getOrder(@PathVariable(required = false) Integer id) {
         if (id != null) {
