@@ -1,4 +1,4 @@
-package com.mainacad.controller;
+package com.mainacad.controller.jsp;
 
 import com.mainacad.model.User;
 import com.mainacad.service.UserService;
@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@Profile("jsp")
 @RequestMapping("user")
+@Profile("jsp")
 public class UserJspController {
 
     @Autowired
     UserService userService;
 
-    @PostMapping()
+    @PostMapping("auth")
     public String getAuthUser(Model model,
                               @RequestParam(value="login") String login,
                               @RequestParam(value="pass") String password) {
@@ -31,5 +31,4 @@ public class UserJspController {
         }
         return "wrong-login";
     }
-
 }

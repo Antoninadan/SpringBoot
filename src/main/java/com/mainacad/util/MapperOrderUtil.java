@@ -12,6 +12,7 @@ import com.mainacad.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +40,7 @@ public class MapperOrderUtil {
     public OrderDTO toOrderDTO(String request) {
         try {
             return objectMapper.readValue(request, OrderDTO.class);
-        } catch (JsonProcessingException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return null;

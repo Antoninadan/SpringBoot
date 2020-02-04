@@ -1,4 +1,4 @@
-package com.mainacad.controller;
+package com.mainacad.controller.rest;
 
 import com.mainacad.model.User;
 import com.mainacad.service.UserService;

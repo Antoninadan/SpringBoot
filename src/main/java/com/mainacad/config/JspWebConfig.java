@@ -10,8 +10,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Profile("jsp")
 public class JspWebConfig implements WebMvcConfigurer {
 
-
-
-
-
+    @Override
+    public void addViewControllers (ViewControllerRegistry registry) {
+        registry.addViewController("/");
+    }
 }

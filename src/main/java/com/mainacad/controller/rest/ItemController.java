@@ -1,4 +1,4 @@
-package com.mainacad.controller;
+package com.mainacad.controller.rest;
 
 import com.mainacad.model.Item;
 import com.mainacad.model.Status;
